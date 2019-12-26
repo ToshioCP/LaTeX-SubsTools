@@ -184,15 +184,19 @@ LaTeXファイルにプログラムコードを挿入するrubyスクリプト�
 texfileの中に
 
     %insertcode{sample.rb}
+    ... ここに何か行があっても良い（初期状態では通常何もない） ...
+    %end_insertcode
 
 （sample.rbはプログラムコードのファイル名の例）
-とあると、その部分の次の行に
+とあると、この2行の間がverbatim環境とプログラムコードに置き換えられる。
 
+    %insertcode{sample.rb}
     \begin{verbatim}
     ... sample.rbの内容 ...
     \end{verbatim}
+    %end_insertcode
 
-を書き込んで上書きする。
+ファイルはバックアップされた後に上書きされる。
 
     $ label [-l|-m] [rootfile]
 
@@ -205,17 +209,10 @@ texfileの中に
     $ reset rootfile
 
 rubyスクリプト。
-そのLaTeXファイルのメインファイルとサブファイルのすべてのバックアップファイルを元のファイルにコピー上書きして、元の状態にもどす。
+そのLaTeXファイルのメインファイルとサブファイルのすべてのバックアップファイル（が存在したら）を元のファイルにコピー上書きして、元の状態にもどす。
 例えば、main.tex.bakの内容をmain.texに上書きする。
 そして、そのサブファイルがsub.texだとすると、sub.tex.bakの内容をsub.texに上書きする。
 サブファイルの検索は、main.texから行い、main.tex.bakから行うのではない。
-バックアップファイルが一つでも無いと、エラー終了しリセットは行われない。
-everyを使うと、プリアンブルのサブファイルのバックアップが無いために、上記のエラーが出る。
-そのときは、
-
-    $cp helper.tex helper.tex.bak
-
-のようにして、バックアップファイルを作成してからリセットすれば良い。
 
 ### ltxパッケージ
 

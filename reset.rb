@@ -23,11 +23,8 @@ end
 ltx = Ltx.new rootfile
 files = ltx.files
 files.each do |f|
-  if ! File.exist? f+".bak"
-    raise "#{f+".bak"} doesn't exist.\n"
+  if File.exist? f+".bak"
+    IO.write(f, IO.read(f+".bak"))
   end
 end
 
-files.each do |f|
-  IO.write(f, IO.read(f+".bak"))
-end

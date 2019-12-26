@@ -6,7 +6,8 @@ exec ruby -x "$0" "$@"
 
 # LaTeXソースファイル中に
 # %insertcode{プログラムのソースファイル名}
-# という行があったときに、そのプログラムコードを読み込んでLaTeXソースファイル中に展開し、合わせてverbatim環境をセットする。
+# %end_insertcode
+# という行があったときに、その行の間に、プログラムコードを読み込んでLaTeXソースファイル中に展開し、合わせてverbatim環境をセットする。
 # プログラムのソースファイル名はそのLaTeXソースファイルのあるディレクトリからの相対ディレクトリ
 #
 # 例
@@ -16,14 +17,17 @@ exec ruby -x "$0" "$@"
 # LaTeX ファイル
 # ... 文章 ...
 # %insertcode{sample.rb}
+# %end_insertcode
 # ... 次の文章 ...
 #
 # ===>>>
 #
 # ... 文章 ...
+# %insertcode{sample.rb}
 # \begin{verbatim}
 # print "Hello world.\n"
 # \end{verbatim}
+# %end_insertcode
 # ... 次の文章 ...
 #
 # これを、LaTeXだけで解決するのは難しい。
@@ -32,7 +36,6 @@ exec ruby -x "$0" "$@"
 # Usage: insertcode texfile
 
 # ファイル名に.bak拡張子をつけたバックアップを作成する
-# %insertcodeを取り込んだコードで置き換えて、引数で与えられたファイル（texfile）に上書きする
 
 require 'fileutils'
 
@@ -50,14 +53,26 @@ end
 
 buf_texfile = IO.read(texfile)
 buf = ""
+
+# between %insertcode{} and %end_insertcode
+between = false
+
 buf_texfile.each_line do |s|
-  if s =~ /^%insertcode\{([^}]+)\}/
-    buf += s
-    buf += "\\begin{verbatim}\n"
-    buf += IO.read($1)
-    buf += "\\end{verbatim}\n"
+  if between
+    if s == "%end_insertcode\n"
+      buf += s
+      between = false
+    end
   else
-    buf += s
+    if s =~ /^%insertcode\{([^}]+)\}/
+      buf += s
+      buf += "\\begin{verbatim}\n"
+      buf += IO.read($1)
+      buf += "\\end{verbatim}\n"
+      between = true
+    else
+      buf += s
+    end
   end
 end
 IO.write("#{texfile}.bak",buf_texfile)
