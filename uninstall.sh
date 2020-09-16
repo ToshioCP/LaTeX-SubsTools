@@ -4,7 +4,7 @@
 # option : -s taget directorys are /usr/local/bin and /usr/local/share/ltxtools (default when root)
 #          -u taget directorys are $HOME/bin and $HOME/share/ltxtools (default when user mode)
 
-binfiles="cattex every indent insertcode label reset"
+binfiles="cattex every indent insertcode label revert"
 
 if [[ $# -eq 1 && $1 == "-u" ]] ; then
   bin="$HOME/bin"

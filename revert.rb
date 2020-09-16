@@ -2,7 +2,7 @@
 exec ruby -x "$0" "$@"
 #!ruby
 
-# Usage : reset [rootfile]
+# Usage : revert [rootfile]
 # This script restores LaTeX files (mainfile and subfiles).
 # That is, it copies file.tex.bak to file.tex and overwrites it.
 
@@ -16,7 +16,7 @@ elsif ARGV.size == 1
   FileUtils.cd dname
   rootfile = File.basename(ARGV[0]).gsub(/\.tex$/,"")+".tex"
 else
-  $stderr.print "Usage : reset [rootfile]\n"
+  $stderr.print "Usage : revert [rootfile]\n"
   exit 1
 end
 

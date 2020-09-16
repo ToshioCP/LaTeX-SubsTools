@@ -56,7 +56,7 @@ fi
 
 # generate bin scripts
 bcopy insertcode rb
-bcopy reset rb
+bcopy revert rb
 bcopy indent rb
 bcopy cattex rb
 bcopy every sh
