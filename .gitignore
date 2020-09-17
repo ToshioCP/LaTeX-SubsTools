@@ -58,3 +58,6 @@ build-iPhoneSimulator/
 # ignore backupfiles
 *~
 ltx/*~
+
+#ignore temporary file
+ltx/install_directory.txt
